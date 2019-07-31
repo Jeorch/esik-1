@@ -9,7 +9,7 @@ LABEL   maintainer="czhang@pharbers.com" PhAuthServer.version="0.0.1"
 
 # 设置工程配置文件的环境变量 && 开启go-module
 ENV     PROJECT_NAME esik
-ENV     GITHUB_URL https://github.com/Jeorch
+ENV     GITHUB_URL https://github.com/PharbersDeveloper
 ENV     BM_KAFKA_CONF_HOME $GOPATH/$PROJECT_NAME/resources
 ENV     LOGGER_USER $HOSTNAME
 ENV     LOGGER_DEBUG true
