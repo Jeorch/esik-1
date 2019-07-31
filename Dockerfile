@@ -2,7 +2,7 @@
 FROM    golang:1.12.4-alpine
 
 # 安装git
-RUN     apk add --no-cache git gcc musl-dev
+RUN     apk add --no-cache git gcc musl-dev mercurial bash gcc g++ make pkgconfig openssl-dev
 
 #LABEL 更改version后，本地build时LABEL以上的Steps使用Cache
 LABEL   maintainer="czhang@pharbers.com" PhAuthServer.version="0.0.1"
@@ -18,9 +18,18 @@ ENV     ESIK_TOPIC esik
 ENV     ESIK_MOUNT_POINT /
 ENV     ESIK_TICKER_MS 10000
 ENV     GO111MODULE on
+ENV     PKG_CONFIG_PATH /usr/lib/pkgconfig
+
+# 下载rdkafka
+RUN git clone https://github.com/edenhill/librdkafka.git $GOPATH/librdkafka
+
+WORKDIR $GOPATH/librdkafka
+RUN ./configure --prefix /usr  && \
+make && \
+make install
 
 # 下载工程
-RUN     git clone $GITHUB_URL/$PROJECT_NAME $GOPATH/
+RUN     git clone $GITHUB_URL/$PROJECT_NAME $GOPATH/$PROJECT_NAME
 
 # 设置工作目录
 WORKDIR $GOPATH/$PROJECT_NAME
