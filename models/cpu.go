@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func GetCpuStatus() (float64, error) {
+func getCpuUsage() (float64, error) {
 
 	idle1, total1, err := getIdleTotal()
 	if err != nil {
@@ -34,7 +34,7 @@ func getIdleTotal() (idle int64, total int64, err error) {
 
 	cc := strings.Fields(s[0])
 	if len(cc) == 0 {
-		return -1, -1, errors.New("Read \"/proc/stat\" failed because first line is empty.")
+		return -1, -1, errors.New("Read \"gCPUFile\" failed because first line is empty.")
 	}
 	if strings.HasPrefix(cc[0], "cpu") {
 		if len(cc) < 8 {

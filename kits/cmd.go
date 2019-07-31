@@ -1,4 +1,4 @@
-package utils
+package kits
 
 import (
 	"fmt"
@@ -6,8 +6,8 @@ import (
 	"os/exec"
 )
 
-func GetCmdInfo() (info string, err error) {
-	cmd := exec.Command("/bin/bash", "-c", `df -lh`)
+func GetCmdInfo(cmdMsg string) (info string, err error) {
+	cmd := exec.Command("/bin/bash", "-c", cmdMsg)
 
 	//创建获取命令输出管道
 	stdout, err := cmd.StdoutPipe()
