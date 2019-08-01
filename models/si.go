@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"github.com/alfredyang1986/blackmirror/bmlog"
 	"os"
 	"time"
 )
@@ -39,18 +40,22 @@ func (si *SystemInfo) ExtractSystemInfo() (err error) {
 	si.Time = time.Now().Format(gTimeFarmat)
 	si.Hostname, err = os.Hostname()
 	if err != nil {
+		bmlog.StandardLogger().Error("Cause by: ", err.Error())
 		return
 	}
 	si.Ip, err = GetIntranetIp()
 	if err != nil {
+		bmlog.StandardLogger().Error("Cause by: ", err.Error())
 		return
 	}
 	si.CpuUsage, err = getCpuUsage()
 	if err != nil {
+		bmlog.StandardLogger().Error("Cause by: ", err.Error())
 		return
 	}
 	si.MemUsage, err = getMemoryUsage()
 	if err != nil {
+		bmlog.StandardLogger().Error("Cause by: ", err.Error())
 		return
 	}
 	mountPoint := os.Getenv("ESIK_MOUNT_POINT")
@@ -59,10 +64,12 @@ func (si *SystemInfo) ExtractSystemInfo() (err error) {
 	}
 	si.DiskUsage, err = getDiskUsage(mountPoint)
 	if err != nil {
+		bmlog.StandardLogger().Error("Cause by: ", err.Error())
 		return
 	}
 	si.NetStatus, err = getNetStatus()
 	if err != nil {
+		bmlog.StandardLogger().Error("Cause by: ", err.Error())
 		return
 	}
 	return

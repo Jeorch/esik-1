@@ -14,6 +14,6 @@ services:
       LOGGER_DEBUG： false
       LOG_PATH： /tmp/logs-path/esik.log
       LOGGER_USER： $USER
-      BM_KAFKA_CONF_HOME： /go/esik/resources
+      BM_KAFKA_CONF_HOME： /go/esik/resources/kafkaconfig.json
       ESIK_TOPIC： esik
       ESIK_MOUNT_POINT： /
