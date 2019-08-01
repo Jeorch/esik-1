@@ -18,15 +18,6 @@ var t *time.Ticker
 var err error
 
 func main() {
-	//Set some env.
-	//_ = os.Setenv("LOGGER_DEBUG", "false")
-	//_ = os.Setenv("LOG_PATH", "/home/jeorch/work/test/temp/go.log")
-	_ = os.Setenv("LOGGER_USER", "esik")
-	_ = os.Setenv("BM_KAFKA_CONF_HOME", "resource/kafkaconfig.json")
-	_ = os.Setenv("ESIK_TOPIC", "esik")
-	_ = os.Setenv("ESIK_MOUNT_POINT", "/")
-	_ = os.Setenv("ESIK_TICKER_MS", "10000")	//10s
-
 	bmlog.StandardLogger().Info("Esik Start.")
 	bkc, err = bmkafka.GetConfigInstance()
 	if err != nil {
