@@ -10,6 +10,7 @@ import (
 	kafkaAvro "github.com/elodina/go-kafka-avro"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -58,12 +59,19 @@ func producceSi(si models.SystemInfo) (err error) {
 	fmt.Println(si)
 
 	topic := os.Getenv("ESIK_TOPIC")
+	hostname := os.Getenv("HOSTNAME")
+	if hostname == "" {
+		bmlog.StandardLogger().Error("no HOSTNAME env set.")
+	}
 	if topic == "" {
-		panic("no topic set in env.")
+		topic = "esik_" + strings.ReplaceAll(hostname, ".", "_")
 	}
 
-	var rawMetricsSchema = `{"type": "record","name": "esik","fields": [{"name": "time", "type": "string"},{"name": "hostname",  "type": "string" },{"name": "ip",  "type": "string" },
-			{"name": "cpu",  "type": "string" },{"name": "memory",  "type": "string" },{"name": "disk",  "type": "string" },{"name": "receive",  "type": "string" },{"name": "transmit",  "type": "string" }]}`
+	var rawMetricsSchema = fmt.Sprint(`{"type": "record","name": "`, topic, `","fields": `,
+		`[{"name": "time", "type": "string"},{"name": "hostname",  "type": "string" },{"name": "ip",  "type": "string" },`,
+		`{"name": "cpu",  "type": "string" },{"name": "memory",  "type": "string" },{"name": "disk",  "type": "string" },{"name": "receive",  "type": "string" },{"name": "transmit",  "type": "string" }]}`)
+	//var rawMetricsSchema = `{"type": "record","name": "esik","fields": [{"name": "time", "type": "string"},{"name": "hostname",  "type": "string" },{"name": "ip",  "type": "string" },
+	//		{"name": "cpu",  "type": "string" },{"name": "memory",  "type": "string" },{"name": "disk",  "type": "string" },{"name": "receive",  "type": "string" },{"name": "transmit",  "type": "string" }]}`
 
 	encoder := kafkaAvro.NewKafkaAvroEncoder(bkc.SchemaRepositoryUrl)
 	schema, err := avro.ParseSchema(rawMetricsSchema)
