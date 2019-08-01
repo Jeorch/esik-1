@@ -23,18 +23,18 @@ Esik means "Extract System Info to Kafka". Go version is 12.
 |   ESIK_MOUNT_POINT    |   'Extract System Info to Kafka' Disk Mount Point    |
 |   ESIK_TICKER_MS    |   'Extract System Info to Kafka' Ticker Millisecond    |
 
-***2.Run esik.***
-```cassandraql
-$ go build -a
-$ go run esik.go
+***2.Install rdkafka***
+```shell script
+$ git clone https://github.com/edenhill/librdkafka.git $GOPATH/librdkafka
+
+$ cd $GOPATH/librdkafka
+$ ./configure --prefix /usr  && \
+make && \
+make install
 ```
 
-***3.Run esik in docker container.***
+***3.Run esik.***
 ```shell script
-$ docker build -t="esik" .
-$ docker run --name esik esik -v ${your_kafka_conf_path}/secrets:/go/esik/secrets:ro
-```
-or
-```shell script
-$ docker-compose -f docker-compose.yml up
+$ go build -a
+$ go run esik.go
 ```
