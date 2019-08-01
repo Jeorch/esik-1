@@ -1,0 +1,19 @@
+---
+version: '2'
+services:
+  esik:
+    image: pharbers/esik:0.0.1
+    hostname: esik
+    container_name: esik
+    restart: always
+    volumes:
+      - ~/tools/kafka_2.11-1.1.0/config/secrets:/go/esik/secrets:ro
+      - /tmp/logs-path:/tmp/logs-path:rw
+      - /proc:/proc:ro
+    entrypoint:
+      LOGGER_DEBUG： false
+      LOG_PATH： /tmp/logs-path/esik.log
+      LOGGER_USER： $USER
+      BM_KAFKA_CONF_HOME： /go/esik/resources
+      ESIK_TOPIC： esik
+      ESIK_MOUNT_POINT： /

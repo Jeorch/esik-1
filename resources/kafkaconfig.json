@@ -1,0 +1,12 @@
+{
+  "Broker":"59.110.31.50:9092",
+  "SchemaRepositoryUrl":"http://59.110.31.50:8081",
+  "Group":"test20190801",
+  "CaLocation":"/go/esik/secrets/snakeoil-ca-1.crt",
+  "CaSignedLocation":"/go/esik/secrets/kafkacat-ca1-signed.pem",
+  "SslKeyLocation":"/go/eisk/secrets/kafkacat.client.key",
+  "Pass":"pharbers",
+  "Topics": [
+    "test"
+  ]
+}

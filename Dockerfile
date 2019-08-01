@@ -11,12 +11,6 @@ LABEL   maintainer="czhang@pharbers.com" PhAuthServer.version="0.0.1"
 ENV     PROJECT_NAME esik
 ENV     GITHUB_URL https://github.com/PharbersDeveloper
 ENV     BM_KAFKA_CONF_HOME $GOPATH/$PROJECT_NAME/resources
-ENV     LOGGER_USER $HOSTNAME
-ENV     LOGGER_DEBUG true
-ENV     LOG_PATH $GOPATH/go.log
-ENV     ESIK_TOPIC esik
-ENV     ESIK_MOUNT_POINT /
-ENV     ESIK_TICKER_MS 10000
 ENV     GO111MODULE on
 ENV     PKG_CONFIG_PATH /usr/lib/pkgconfig
 
