@@ -22,3 +22,11 @@ func TestGetNetStatus(t *testing.T) {
 	}
 	fmt.Println("netStatus", netStatus)
 }
+
+func TestGetNetSpeed(t *testing.T) {
+	netSpeed, err := getNetSpeed()
+	if err != nil {
+		panic(err.Error())
+	}
+	fmt.Println("netSpeed", netSpeed)
+}

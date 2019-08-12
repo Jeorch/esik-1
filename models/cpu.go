@@ -3,6 +3,8 @@ package models
 import (
 	"errors"
 	"io/ioutil"
+	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -13,7 +15,15 @@ func getCpuUsage() (float64, error) {
 	if err != nil {
 		panic(err.Error())
 	}
-	time.Sleep(1 * time.Second)
+	cpuTimeMsStr := os.Getenv("ESIK_CPU_DURATION_MS")
+	if cpuTimeMsStr == "" {
+		cpuTimeMsStr = "500"	//500ms
+	}
+	cpuTimeMs, err := strconv.ParseInt(cpuTimeMsStr, 10, 64)
+	if err != nil {
+		panic(err.Error())
+	}
+	time.Sleep(time.Duration(cpuTimeMs) * time.Millisecond)
 	idle2, total2, err := getIdleTotal()
 	if err != nil {
 		panic(err.Error())

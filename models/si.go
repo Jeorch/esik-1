@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	gTimeFarmat = "2006-01-02 15:04:05"
+	gTimeFarmat = "15:04:05"
 	gCPUFile    = "/proc/stat"
 	gMemFile    = "/proc/meminfo"
 	gDiskCmd    = "df -lh | grep /"
@@ -22,7 +22,7 @@ type SystemInfo struct {
 	CpuUsage  float64
 	MemUsage  float64
 	DiskUsage float64
-	NetStatus  *NetStatus
+	NetSpeed  *NetSpeed
 }
 
 // String format the SystemInfo struct.
@@ -31,8 +31,8 @@ func (si *SystemInfo) String() (net string) {
 		return
 	}
 
-	return fmt.Sprintf("Time:%s, Hostname:%s, Ip:%s, CpuUsage:%.2f%%, MemUsage:%.2f%%, DiskUsage:%.2f%%, NetStatus:%v",
-		si.Time, si.Hostname, si.Ip, si.CpuUsage, si.MemUsage, si.DiskUsage, si.NetStatus)
+	return fmt.Sprintf("Time:%s, Hostname:%s, Ip:%s, CpuUsage:%.2f%%, MemUsage:%.2f%%, DiskUsage:%.2f%%, NetSpeed:%v",
+		si.Time, si.Hostname, si.Ip, si.CpuUsage, si.MemUsage, si.DiskUsage, si.NetSpeed)
 }
 
 func (si *SystemInfo) ExtractSystemInfo() (err error) {
@@ -67,7 +67,7 @@ func (si *SystemInfo) ExtractSystemInfo() (err error) {
 		bmlog.StandardLogger().Error("Cause by: ", err.Error())
 		return
 	}
-	si.NetStatus, err = getNetStatus()
+	si.NetSpeed, err = getNetSpeed()
 	if err != nil {
 		bmlog.StandardLogger().Error("Cause by: ", err.Error())
 		return

@@ -19,9 +19,11 @@ Esik means "Extract System Info to Kafka". Go version is 12.
 |   LOGGER_DEBUG    |   true or false    |
 |   LOG_PATH    |   log store path    |
 |   LOGGER_USER    |   log user    |
-|   ESIK_TOPIC    |   'Extract System Info to Kafka' Topic    |
-|   ESIK_MOUNT_POINT    |   'Extract System Info to Kafka' Disk Mount Point    |
-|   ESIK_TICKER_MS    |   'Extract System Info to Kafka' Ticker Millisecond    |
+|   ESIK_TOPIC    |   ESIK's Topic    |
+|   ESIK_MOUNT_POINT    |   ESIK's Disk Mount Point    |
+|   ESIK_TICKER_MS    |   ESIK's Ticker Millisecond    |
+|   ESIK_CPU_DURATION_MS    |   ESIK's CPU Duration Millisecond    |
+|   ESIK_NET_DURATION_MS    |   ESIK's Net Duration Millisecond    |
 
 ***2.Install rdkafka***
 ```shell script

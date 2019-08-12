@@ -46,9 +46,8 @@ func string2Float64(src string) (rs float64) {
 	return
 }
 
-func floatFormat(value float64) float64 {
-	value, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", value), 64)
-	return value
+func FloatFormat(value float64) (result string) {
+	return fmt.Sprintf("%.2f", value)
 }
 
 func PercentFormat(value float64) (percent string) {

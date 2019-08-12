@@ -2,7 +2,7 @@
 FROM    golang:1.12.4-alpine
 
 # 安装git
-RUN     apk add --no-cache git gcc musl-dev mercurial bash gcc g++ make pkgconfig openssl-dev
+RUN     apk add --no-cache git musl-dev mercurial bash gcc g++ make pkgconfig openssl-dev
 
 #LABEL 更改version后，本地build时LABEL以上的Steps使用Cache
 LABEL   maintainer="czhang@pharbers.com" PhAuthServer.version="0.0.1"

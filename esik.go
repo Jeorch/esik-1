@@ -29,13 +29,12 @@ func main() {
 
 	tickerStr := os.Getenv("ESIK_TICKER_MS")
 	if tickerStr == "" {
-		tickerStr = "10000"	//10s
+		tickerStr = "1000"	//1s
 	}
 	ticker, err := strconv.ParseInt(tickerStr, 10, 64)
 	if err != nil {
 		panic(err.Error())
 	}
-
 	t = time.NewTicker(time.Duration(ticker) * time.Millisecond)
 	defer clear()
 	for {
@@ -45,7 +44,8 @@ func main() {
 			if err != nil {
 				panic(err.Error())
 			}
-			err = producceSi(*si)
+			fmt.Println(si)
+			err = produceSi(*si)
 			if err != nil {
 				panic(err.Error())
 			}
@@ -54,24 +54,20 @@ func main() {
 
 }
 
-func producceSi(si models.SystemInfo) (err error) {
-
-	fmt.Println(si)
+func produceSi(si models.SystemInfo) (err error) {
 
 	topic := os.Getenv("ESIK_TOPIC")
-	hostname := os.Getenv("HOSTNAME")
-	if hostname == "" {
-		bmlog.StandardLogger().Error("no HOSTNAME env set.")
-	}
 	if topic == "" {
-		topic = "esik_" + strings.ReplaceAll(hostname, ".", "_")
+		hostname := os.Getenv("HOSTNAME")
+		if hostname == "" {
+			bmlog.StandardLogger().Error("no HOSTNAME env set.")
+		}
+		topic = "esik00" + strings.ReplaceAll(strings.ReplaceAll(hostname, ".", ""), "_", "")
 	}
 
 	var rawMetricsSchema = fmt.Sprint(`{"type": "record","name": "`, topic, `","fields": `,
 		`[{"name": "time", "type": "string"},{"name": "hostname",  "type": "string" },{"name": "ip",  "type": "string" },`,
 		`{"name": "cpu",  "type": "string" },{"name": "memory",  "type": "string" },{"name": "disk",  "type": "string" },{"name": "receive",  "type": "string" },{"name": "transmit",  "type": "string" }]}`)
-	//var rawMetricsSchema = `{"type": "record","name": "esik","fields": [{"name": "time", "type": "string"},{"name": "hostname",  "type": "string" },{"name": "ip",  "type": "string" },
-	//		{"name": "cpu",  "type": "string" },{"name": "memory",  "type": "string" },{"name": "disk",  "type": "string" },{"name": "receive",  "type": "string" },{"name": "transmit",  "type": "string" }]}`
 
 	encoder := kafkaAvro.NewKafkaAvroEncoder(bkc.SchemaRepositoryUrl)
 	schema, err := avro.ParseSchema(rawMetricsSchema)
@@ -81,11 +77,11 @@ func producceSi(si models.SystemInfo) (err error) {
 	record.Set("time", si.Time)
 	record.Set("hostname", si.Hostname)
 	record.Set("ip", si.Ip)
-	record.Set("cpu", models.PercentFormat(si.CpuUsage))
-	record.Set("memory", models.PercentFormat(si.MemUsage))
-	record.Set("disk", models.PercentFormat(si.DiskUsage))
-	record.Set("receive", models.ByteFormat(float64(si.NetStatus.Receive)))
-	record.Set("transmit", models.ByteFormat(float64(si.NetStatus.Transmit)))
+	record.Set("cpu", models.FloatFormat(si.CpuUsage))
+	record.Set("memory", models.FloatFormat(si.MemUsage))
+	record.Set("disk", models.FloatFormat(si.DiskUsage))
+	record.Set("receive", models.FloatFormat(si.NetSpeed.Receive/1024))	//默认速度以kb/s为单位
+	record.Set("transmit", models.FloatFormat(si.NetSpeed.Transmit/1024))	//默认速度以kb/s为单位
 	recordByteArr, err := encoder.Encode(record)
 	bmerror.PanicError(err)
 
